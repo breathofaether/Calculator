@@ -1,85 +1,77 @@
 import React, { useState } from "react";
+import { evaluate, format } from "mathjs";
+
 
 const Calculator = () => {
-  let [result, setResult] = useState("");
+  const [result, setResult] = useState("");
 
-  const handleClick = (e) => {
-    if (result.length >= 16) {
-      setResult("!Large Input");
-      setTimeout(() => {
-        setResult("");
-      }, 500);
-      return;
-    }
-    if (result.charAt(0) === "0") {q
+  const numbers = Array.from({ length: 10 }, (_, index) => index)
+  const operators = ["/", "*", "-", "+"]
 
-      result = result.slice(1, result.length);
-    }
-    setResult(result.concat(e.target.name));
+
+  const handleClick = (value) => {
+    setResult(result+value)
+  }
+
+  const handleClear = () => {
+    setResult("");
   };
 
   const handleBackspace = () => {
-    setResult(result.slice(0, result.length - 1));
-  };
+    setResult(result.slice(0, -1))
+  }
 
-  const calculate = () => {
+  const handleCalculate = () => {
     try {
-      result = eval(result).toString();
-      if (result.includes(".")) {
-        result = +eval(result);
-        result = result.toFixed(4).toString();
-        setResult(result);
-      } else {
-        setResult(eval(result).toString());
-      }
-    } catch (err) {
-      setResult("Error");
+      const evaluatedResult = evaluate(result);
+      const formattedResult = format(evaluatedResult, {notation: "fixed"})
+      setResult(formattedResult)
+    } catch (error) {
+      setResult("Error")
     }
-  };
-
-  const buttons = [
-    { name: "clear", label: "clear", className: "clear color", onClick: () => setResult("") },
-    { name: "C", label: "C", className: "backspace color", onClick: handleBackspace },
-    { name: "/", label: "/", className: "color", onClick: handleClick },
-    { name: "7", label: "7", onClick: handleClick },
-    { name: "8", label: "8", onClick: handleClick },
-    { name: "9", label: "9", onClick: handleClick },
-    { name: "*", label: "*", className: "color", onClick: handleClick },
-    { name: "4", label: "4", onClick: handleClick },
-    { name: "5", label: "5", onClick: handleClick },
-    { name: "6", label: "6", onClick: handleClick },
-    { name: "-", label: "-", className: "color", onClick: handleClick },
-    { name: "1", label: "1", onClick: handleClick },
-    { name: "2", label: "2", onClick: handleClick },
-    { name: "3", label: "3", onClick: handleClick },
-    { name: "+", label: "+", className: "color", onClick: handleClick },
-    { name: "0", label: "0", onClick: handleClick },
-    { name: ".", label: ".", onClick: handleClick },
-    { name: "=", label: "=", className: "equal color", onClick: calculate },
-  ];
+  }
 
 
 
   return (
-    <div className="container">
-      <form action="">
+    <div className="calculator-container">
+      <div className="screen">
         <input type="text" value={result} readOnly />
-      </form>
+      </div>
 
-      <div className="keypad">
-        {buttons.map((button, index) => (
+      <div className="button-panel">
+        <div className="numbers">
+          {numbers.map((number) => (
+            <button
+              key={number}
+              className="number-btn"
+              onClick={() => handleClick(number.toString())}>
+              {number}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="operators">
+        {operators.map((operator) => (
           <button
-            key={index}
-            name={button.name}
-            className={button.className || ""}
-            onClick={button.onClick}
-          >
-            {button.label}
+          key={operator}
+          className="operator-btn"
+          onClick={() => handleClick(operator)}>
+            {operator}
           </button>
         ))}
       </div>
+
+      <div className="actions">
+        <button className="clear-btn" onClick={handleClear}>Clear</button>
+        <button className="backspace-btn" onClick={handleBackspace}>C</button>
+        <button className="equal-btn" onClick={handleCalculate}>=</button>
+      </div>
+
     </div>
   );
 };
 
 export default Calculator;
+
