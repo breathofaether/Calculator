@@ -1,16 +1,72 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
-
+/* Base Reset */
 * {
   margin: 0;
   padding: 0;
-  font-family: "Montserrat", sans-serif;
+  box-sizing: border-box;
 }
 
+/* General body with soft background */
 body {
-  height: 100vh;
+  background: linear-gradient(135deg, #e0eafc, #cfdef3);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   display: flex;
-  align-items: center;
   justify-content: center;
-  background-color: #fbb034;
-  background-image: linear-gradient(315deg, #fbb034 0%, #ffdd00 74%);
+  align-items: center;
+  height: 100vh;
+}
+
+/* Main Calculator Container with Pixel Material One-like aesthetics */
+.calculator {
+  width: 320px;
+  margin: 20px auto;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+/* Display area styled with vibrant material design principles */
+.display {
+  background: linear-gradient(145deg, #ffffff, #e0e0e0);
+  padding: 20px;
+  font-size: 2.4em;
+  text-align: right;
+  color: #333333;
+  border-bottom: 2px solid #010508; /* Blue gradient effect */
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+}
+
+/* Button Panel styled like Material One UI */
+.button-panel {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px; /* Space between buttons for a clean, modern feel */
+  padding: 8px;
+  background: #f0f2f5;
+  border-radius: 12px;
+}
+
+/* Styled Buttons with rounded corners and shadows */
+button {
+  padding: 18px;
+  font-size: 1.4em;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #ffffff, #d1d6de);
+  color: #333333;
+  transition: all 0.2s ease;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Button Hover Effect */
+button:hover {
+  background: linear-gradient(145deg, #e0e0e0, #c0c0c0);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Button Active Effect */
+button:active {
+  background: linear-gradient(145deg, #c0c0c0, #a0a0a0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }

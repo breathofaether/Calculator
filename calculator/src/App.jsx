@@ -1,77 +1,75 @@
 import React, { useState } from "react";
-import { evaluate, format } from "mathjs";
+import { evaluate } from "mathjs";
 
-
-const Calculator = () => {
-  const [result, setResult] = useState("");
-
-  const numbers = Array.from({ length: 10 }, (_, index) => index)
-  const operators = ["/", "*", "-", "+"]
-
-
-  const handleClick = (value) => {
-    setResult(result+value)
-  }
-
-  const handleClear = () => {
-    setResult("");
-  };
-
-  const handleBackspace = () => {
-    setResult(result.slice(0, -1))
-  }
-
-  const handleCalculate = () => {
-    try {
-      const evaluatedResult = evaluate(result);
-      const formattedResult = format(evaluatedResult, {notation: "fixed"})
-      setResult(formattedResult)
-    } catch (error) {
-      setResult("Error")
-    }
-  }
-
-
-
+function Display({ value }) {
   return (
-    <div className="calculator-container">
-      <div className="screen">
-        <input type="text" value={result} readOnly />
-      </div>
-
-      <div className="button-panel">
-        <div className="numbers">
-          {numbers.map((number) => (
-            <button
-              key={number}
-              className="number-btn"
-              onClick={() => handleClick(number.toString())}>
-              {number}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="operators">
-        {operators.map((operator) => (
-          <button
-          key={operator}
-          className="operator-btn"
-          onClick={() => handleClick(operator)}>
-            {operator}
-          </button>
-        ))}
-      </div>
-
-      <div className="actions">
-        <button className="clear-btn" onClick={handleClear}>Clear</button>
-        <button className="backspace-btn" onClick={handleBackspace}>C</button>
-        <button className="equal-btn" onClick={handleCalculate}>=</button>
-      </div>
-
+    <div className="display">
+      {value}
     </div>
   );
-};
+}
 
-export default Calculator;
+function ButtonPanel({ onButtonClick }) {
+  const buttons = [
+    "Clear","%", "(", ")",
+    '7', '8', '9', '/',
+    '4', '5', '6', '*',
+    '1', '2', '3', '-',
+    '0', '.', '=', '+'
+  ];
 
+  return (
+    <div className="button-panel">
+      {buttons.map((btn) => (
+        <button key={btn} onClick={() => onButtonClick(btn)}>
+          {btn}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+export default function App() {
+  const [input, setInput] = useState('');
+
+  const handleButtonClick = (value) => {
+
+    if (value === "Clear") {
+      return setInput("");
+    }
+
+    if (value === "C") {
+      if (input.length > 1) {
+        return setInput(input.slice(0, -1));
+      } else {
+        return setInput("");
+      }
+    }
+
+    if (value === '=') {
+      try {
+        const result = evaluate(input);
+        setInput(result.toString());
+      } catch (error) {
+        console.error("MathJS Evaluation Error:", error);
+        setInput("Error");
+
+        setTimeout(() => {
+          setInput("");
+        }, 1000)
+      }
+    } else {
+      if (input === "0" && value !== ".") {
+        return setInput(value);
+      }
+      setInput(input + value);
+    }
+  };
+
+  return (
+    <div className="calculator">
+      <Display value={input} />
+      <ButtonPanel onButtonClick={handleButtonClick} />
+    </div>
+  );
+}
