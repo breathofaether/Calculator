@@ -11,7 +11,7 @@ function Display({ value }) {
 
 function ButtonPanel({ onButtonClick }) {
   const buttons = [
-    "Clear","%", "(", ")",
+    "CE","%", "(", ")",
     '7', '8', '9', '/',
     '4', '5', '6', '*',
     '1', '2', '3', '-',
@@ -30,19 +30,19 @@ function ButtonPanel({ onButtonClick }) {
 }
 
 export default function App() {
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState('0');
 
   const handleButtonClick = (value) => {
 
     if (value === "Clear") {
-      return setInput("");
+      return setInput('0');
     }
 
-    if (value === "C") {
+    if (value === "CE") {
       if (input.length > 1) {
         return setInput(input.slice(0, -1));
       } else {
-        return setInput("");
+        return setInput('0');
       }
     }
 
@@ -55,7 +55,7 @@ export default function App() {
         setInput("Error");
 
         setTimeout(() => {
-          setInput("");
+          setInput('0');
         }, 1000)
       }
     } else {
