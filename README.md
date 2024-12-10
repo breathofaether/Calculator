@@ -1,3 +1,3 @@
 # Calculator
 
-A responsive React.js calculator with a clean design.
+A simple, basic calculator app built using React.
