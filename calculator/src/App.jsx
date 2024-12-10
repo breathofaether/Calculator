@@ -15,7 +15,8 @@ function ButtonPanel({ onButtonClick, onLongPress, onHover }) {
     '7', '8', '9', '/',
     '4', '5', '6', '*',
     '1', '2', '3', '-',
-    '0', '.', '=', '+'
+    '0', '.', '=', '+',
+    "sin", "cos", "tan", "log"
   ];
 
   return (
@@ -37,8 +38,24 @@ function ButtonPanel({ onButtonClick, onLongPress, onHover }) {
 export default function App() {
   const [input, setInput] = useState('0');
   const [showTooltip, setShowTooltip] = useState(false)
+  const [errorLogs, setErrorLogs] = useState([])
+
   let hoverTimeout = null;
   let hideTimeout = null;
+
+  const logError = (error) => {
+    const errorLog = {
+      message: error.message || 'Unknown error',
+      timestamp: new Date().toISOString()
+    };
+
+    const newErrorLog = [...errorLogs, errorLog]
+    setErrorLogs(newErrorLog)
+
+    setTimeout(() => {
+      setInput('0');
+    }, 1750)
+  }
 
   const handleButtonClick = (value) => {
 
@@ -57,14 +74,14 @@ export default function App() {
     if (value === '=') {
       try {
         const result = evaluate(input);
-        setInput(result.toString());
-      } catch (error) {
-        console.error("MathJS Evaluation Error:", error);
-        setInput("Error");
 
-        setTimeout(() => {
-          setInput('0');
-        }, 1000)
+        if (Number.isSafeInteger(result)) {
+          setInput(result.toString());
+        } else {
+          setInput(Number(result).toFixed(4));
+        }
+      } catch (error) {
+        logError(error)
       }
     } else {
       if (input === '0' && value !== '.') {
@@ -107,13 +124,29 @@ export default function App() {
     }
   };
 
-return (
-  <div className="calculator">
-    <Display value={input} />
-    <div className="tooltip-container">
-      {showTooltip && (<div className="tooltip">Long press to clear</div>)}
+  const handleDownload = () => {
+    const blob = new Blob([errorLogs.map(log => JSON.stringify(log)).join("\n")], { type: 'text/plain' }); const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = "error_log.txt";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  return (
+    <div className="calculator">
+      {errorLogs.length > 0 && (
+        <div className="error-log-container">
+          <button className="download-btn" onClick={handleDownload}>
+            Download Logged Error(s)
+          </button>
+        </div>
+      )}
+      <Display value={input} />
+      <div className="tooltip-container">
+        {showTooltip && (<div className="tooltip">Long press to clear</div>)}
+      </div>
+      <ButtonPanel onButtonClick={handleButtonClick} onLongPress={longPress} onHover={handleHoverTimeOut} />
     </div>
-    <ButtonPanel onButtonClick={handleButtonClick} onLongPress={longPress} onHover={handleHoverTimeOut} />
-  </div>
-);
+  );
 }
