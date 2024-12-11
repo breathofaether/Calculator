@@ -13,7 +13,7 @@ A fully functional scientific calculator built using React. The calculator suppo
 
 ## Live Demo
 
-You can try the live demo of the calculator here: [https://cheery-faloodeh-19d315.netlify.app/](#) *(Insert demo link if applicable)*.
+You can try the live demo of the calculator here: [https://cheery-faloodeh-19d315.netlify.app/](#) .
 
 ## Technologies Used
 
