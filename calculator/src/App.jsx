@@ -61,6 +61,7 @@ export default function App() {
 
     const newErrorLog = [...errorLogs, errorLog]
     console.log("Error: ", errorLog)
+    setInput("Error")
     setErrorLogs(newErrorLog)
 
     setTimeout(() => {
@@ -75,7 +76,7 @@ export default function App() {
 
     if (functions.includes(value)) {
       if (input === "0") {
-        return setInput(`${value}()`);
+        return setInput(`${value}(`);
       } else {
         return setInput((prev) => prev + `${value}(`);
       }
