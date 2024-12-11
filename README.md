@@ -25,7 +25,7 @@ You can try the live demo of the calculator here: https://cheery-faloodeh-19d315
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/<your-username>/react-calculator-app.git
+   git clone https://github.com/breathofaether/Calculator.git
    cd react-calculator-app
    ```
 
