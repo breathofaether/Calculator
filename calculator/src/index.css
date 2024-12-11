@@ -28,9 +28,11 @@ body {
   font-size: 2.4em;
   text-align: right;
   color: #333333;
-  border-bottom: 2px solid #010508; 
+  border-bottom: 2px solid #010508;
   letter-spacing: 0.5px;
   transition: all 0.2s ease;
+  overflow-x: auto; /* Allow horizontal scrolling */
+  white-space: nowrap; /* Prevent line wrapping */
 }
 
 .button-panel {

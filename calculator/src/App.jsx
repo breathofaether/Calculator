@@ -1,9 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { evaluate } from "mathjs";
 
 function Display({ value }) {
+  const displayRef = useRef(null);
+
+  useEffect(() => {
+    if (displayRef.current) {
+      displayRef.current.scrollLeft = displayRef.current.scrollWidth;
+    }
+  }, [value]);
+
   return (
-    <div className="display">
+    <div
+      className="display"
+      ref={displayRef}>
       {value}
     </div>
   );
@@ -50,6 +60,7 @@ export default function App() {
     };
 
     const newErrorLog = [...errorLogs, errorLog]
+    console.log("Error: ", errorLog)
     setErrorLogs(newErrorLog)
 
     setTimeout(() => {
@@ -58,6 +69,17 @@ export default function App() {
   }
 
   const handleButtonClick = (value) => {
+
+
+    const functions = ['sin', 'cos', 'tan', 'log'];
+
+    if (functions.includes(value)) {
+      if (input === "0") {
+        return setInput(`${value}()`);
+      } else {
+        return setInput((prev) => prev + `${value}(`);
+      }
+    }
 
     if (value === "Clear") {
       return setInput('0');
@@ -74,11 +96,16 @@ export default function App() {
     if (value === '=') {
       try {
         const result = evaluate(input);
+        let formattedResult;
+
 
         if (Number.isSafeInteger(result)) {
           setInput(result.toString());
+        } else if (result.toString().length > 18) {
+          formattedResult = result.toExponential(4);
+          setInput(formattedResult)
         } else {
-          setInput(Number(result).toFixed(4));
+          setInput(Number(result).toFixed(12));
         }
       } catch (error) {
         logError(error)
@@ -138,7 +165,7 @@ export default function App() {
       {errorLogs.length > 0 && (
         <div className="error-log-container">
           <button className="download-btn" onClick={handleDownload}>
-            Download Logged Error(s)
+            Download Error Log(s) here
           </button>
         </div>
       )}
