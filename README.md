@@ -8,7 +8,7 @@ A fully functional scientific calculator built using React. The calculator suppo
 - **Scientific Functions**: Includes `sin`, `cos`, `tan`, and `log` functions.
 - **CE**: Has button for clearing the input and for removing the last entry.
 - **Exponential Formatting**: Results that are too large or small are formatted in scientific notation (exponential).
-- **Scroll and Caret**: As the user types, the display scrolls to keep the caret visible. Additionally, caret positioning works when entering functions.
+- **Scroll and Caret**: As the user types, the display scrolls to keep the caret visible.
 - **Error Handling**: Displays error logs and allows the user to download them.
 
 ## Live Demo
